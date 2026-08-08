@@ -35,123 +35,15 @@ if (burger && mobileOverlay) {
 }
 
 /* =========================================================
-   FORMULÁRIO DE ORAÇÃO
+   FORMULÁRIOS VISUAIS — REDIRECIONAMENTO OFICIAL
 ========================================================= */
-const prayerForm = document.querySelector("#prayer-form");
-const prayerIframe = document.querySelector("#hidden_iframe_prayer");
-const prayerSuccess = document.querySelector("#prayer-success");
-let prayerSubmitting = false;
-
-function showFieldError(errorId, show) {
-  const error = document.querySelector(errorId);
-  if (error) error.style.display = show ? "block" : "none";
-}
-
-function hasValue(selector) {
-  return Boolean(document.querySelector(selector)?.value.trim());
-}
-
-function isValidWhatsapp(value) {
-  return /^[0-9\s()+-]+$/.test(value.trim());
-}
-
-function showFormSuccess(messageElement, message) {
-  if (!messageElement) return;
-  messageElement.textContent = message;
-  messageElement.style.display = "block";
-}
-
-function completePrayerSubmission() {
-  if (!prayerSubmitting) return;
-  prayerSubmitting = false;
-  prayerForm?.reset();
-  showFormSuccess(prayerSuccess, "Seu pedido foi recebido. Nossa equipe de intercessão estará orando por você.");
-}
-
-if (prayerForm) {
-  prayerForm.addEventListener("submit", (event) => {
-    if (prayerSuccess) prayerSuccess.style.display = "none";
-
-    const whatsapp = document.querySelector("#oracao-whatsapp")?.value.trim() || "";
-    const contactChecked = Boolean(document.querySelector('input[name="entry.270962273"]:checked'));
-
-    const validations = [
-      ["#erro-whatsapp", "#oracao-whatsapp", whatsapp && isValidWhatsapp(whatsapp)],
-      ["#erro-nome", "#oracao-nome", hasValue("#oracao-nome")],
-      ["#erro-pedido", "#pedido", hasValue("#pedido")],
-      ["#erro-area", "#pedido-area", hasValue("#pedido-area")],
-      ["#erro-idade", "#oracao-idade", hasValue("#oracao-idade")],
-      ["#erro-bairro", "#oracao-bairro", hasValue("#oracao-bairro")],
-      ["#erro-contato", 'input[name="entry.270962273"]', contactChecked]
-    ];
-
-    validations.forEach(([errorId, fieldSelector, valid]) => {
-      showFieldError(errorId, !valid);
-      document.querySelectorAll(fieldSelector).forEach((field) => {
-        field.setAttribute("aria-invalid", String(!valid));
-      });
-    });
-
-    const firstInvalid = validations.find(([, , valid]) => !valid);
-    if (firstInvalid) {
-      event.preventDefault();
-      document.querySelector(firstInvalid[1])?.focus();
-      return;
-    }
-
-    prayerSubmitting = true;
-    window.setTimeout(completePrayerSubmission, 2500);
+document.querySelectorAll(".visual-form").forEach((form) => {
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    window.open(form.action, "_blank", "noopener,noreferrer");
   });
-}
-
-if (prayerIframe) {
-  prayerIframe.addEventListener("load", completePrayerSubmission);
-}
-
-/* =========================================================
-   FORMULÁRIO DE CÉLULAS
-========================================================= */
-const cellsForm = document.querySelector("#cells-form");
-const cellsIframe = document.querySelector("#hidden_iframe_cells");
-const cellsSuccess = document.querySelector("#cells-success");
-let cellsSubmitting = false;
-
-function completeCellsSubmission() {
-  if (!cellsSubmitting) return;
-  cellsSubmitting = false;
-  cellsForm?.reset();
-  showFormSuccess(cellsSuccess, "Recebemos seus dados! Em breve entraremos em contato para ajudar você a encontrar uma célula.");
-}
-
-if (cellsForm) {
-  cellsForm.addEventListener("submit", (event) => {
-    if (cellsSuccess) cellsSuccess.style.display = "none";
-
-    const validations = [
-      ["#cells-error-name-phone", "#cells-name-phone", hasValue("#cells-name-phone")],
-      ["#cells-error-address", "#cells-address", hasValue("#cells-address")]
-    ];
-
-    validations.forEach(([errorId, fieldSelector, valid]) => {
-      showFieldError(errorId, !valid);
-      document.querySelector(fieldSelector)?.setAttribute("aria-invalid", String(!valid));
-    });
-
-    const firstInvalid = validations.find(([, , valid]) => !valid);
-    if (firstInvalid) {
-      event.preventDefault();
-      document.querySelector(firstInvalid[1])?.focus();
-      return;
-    }
-
-    cellsSubmitting = true;
-    window.setTimeout(completeCellsSubmission, 2500);
-  });
-}
-
-if (cellsIframe) {
-  cellsIframe.addEventListener("load", completeCellsSubmission);
-}
+});
 
 /* =========================================================
    PARALLAX HERO MINISTÉRIOS (com requestAnimationFrame)
@@ -249,6 +141,172 @@ document.querySelectorAll(".watch-trigger").forEach((trigger) => {
 });
 
 /* =========================================================
+   MENSAGENS
+   Edite os objetos abaixo para trocar capas, textos e vídeos.
+   Em youtubeId, informe somente o ID (ex.: dQw4w9WgXcQ).
+========================================================= */
+const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@pibrsaojorge";
+
+const mensagens = [
+  {
+    youtubeId: "iabtLscUtGM",
+    titulo: "Culto de Celebração",
+    data: "",
+    pregador: "",
+    descricao: ""
+  },
+  {
+    youtubeId: "NStdcnhxZ1g",
+    titulo: "Culto de Celebração",
+    data: "",
+    pregador: "",
+    descricao: ""
+  },
+  {
+    youtubeId: "KlASUJhVopg",
+    titulo: "Culto de Celebração",
+    data: "",
+    pregador: "",
+    descricao: ""
+  }
+];
+
+const messagesGrid = document.querySelector("#messagesGrid");
+const messageDetail = document.querySelector("#messageDetail");
+const messageDetailBack = document.querySelector("#messageDetailBack");
+const messageFallbackCover = "assets/mensagens/capa-padrao.svg";
+
+function getMessageCover(mensagem) {
+  const youtubeId = mensagem.youtubeId?.trim();
+  if (youtubeId) return `https://i.ytimg.com/vi/${encodeURIComponent(youtubeId)}/maxresdefault.jpg`;
+  return mensagem.imagem || messageFallbackCover;
+}
+
+function createMessageImage(src, alt) {
+  const image = document.createElement("img");
+  image.src = src || messageFallbackCover;
+  image.alt = alt;
+  image.loading = "lazy";
+  image.decoding = "async";
+  image.addEventListener("error", () => {
+    if (image.src.includes("/maxresdefault.jpg")) {
+      image.src = image.src.replace("/maxresdefault.jpg", "/hqdefault.jpg");
+      return;
+    }
+    if (!image.src.endsWith(messageFallbackCover)) image.src = messageFallbackCover;
+  });
+  return image;
+}
+
+function renderMessageCards() {
+  if (!messagesGrid) return;
+  messagesGrid.replaceChildren();
+
+  mensagens.forEach((mensagem, index) => {
+    const article = document.createElement("article");
+    article.className = "message-card";
+
+    const media = document.createElement("div");
+    media.className = "message-card__media";
+    media.append(createMessageImage(getMessageCover(mensagem), `Capa: ${mensagem.titulo}`));
+
+    const content = document.createElement("div");
+    content.className = "message-card__content";
+    content.innerHTML = `
+      <div class="message-card__date">${mensagem.data}</div>
+      <h3>${mensagem.titulo}</h3>
+      ${mensagem.pregador ? `<div class="message-card__speaker">${mensagem.pregador}</div>` : ""}
+      ${mensagem.descricao ? `<p>${mensagem.descricao}</p>` : ""}
+    `;
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "message-card__action";
+    button.textContent = "Assistir mensagem →";
+    button.addEventListener("click", () => openMessage(index));
+    content.append(button);
+    article.tabIndex = 0;
+    article.setAttribute("role", "button");
+    article.setAttribute("aria-label", `Abrir mensagem: ${mensagem.titulo}`);
+    article.addEventListener("click", (event) => {
+      if (!event.target.closest("button")) openMessage(index);
+    });
+    article.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openMessage(index);
+      }
+    });
+    article.append(media, content);
+    messagesGrid.append(article);
+  });
+}
+
+function openMessage(index) {
+  const mensagem = mensagens[index];
+  if (!mensagem || !messageDetail || !messagesGrid) return;
+
+  const detailImage = document.querySelector("#messageDetailImage");
+  detailImage.src = getMessageCover(mensagem);
+  detailImage.alt = `Capa: ${mensagem.titulo}`;
+  detailImage.onerror = () => {
+    if (detailImage.src.includes("/maxresdefault.jpg")) {
+      detailImage.src = detailImage.src.replace("/maxresdefault.jpg", "/hqdefault.jpg");
+      return;
+    }
+    detailImage.onerror = null;
+    detailImage.src = messageFallbackCover;
+  };
+
+  document.querySelector("#messageDetailTitle").textContent = mensagem.titulo;
+  const detailMeta = document.querySelector("#messageDetailMeta");
+  const detailDate = document.querySelector("#messageDetailDate");
+  const detailSpeaker = document.querySelector("#messageDetailSpeaker");
+  const detailDescription = document.querySelector("#messageDetailDescription");
+  detailDate.textContent = mensagem.data || "";
+  detailDate.hidden = !mensagem.data;
+  detailSpeaker.textContent = mensagem.pregador || "";
+  detailSpeaker.hidden = !mensagem.pregador;
+  detailMeta.hidden = !mensagem.data && !mensagem.pregador;
+  detailDescription.textContent = mensagem.descricao || "";
+  detailDescription.hidden = !mensagem.descricao;
+
+  const player = document.querySelector("#messagePlayer");
+  const youtubeLink = document.querySelector("#messageYoutubeLink");
+  player.replaceChildren();
+
+  if (mensagem.youtubeId?.trim()) {
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube.com/embed/${encodeURIComponent(mensagem.youtubeId.trim())}`;
+    iframe.title = `Vídeo: ${mensagem.titulo}`;
+    iframe.loading = "lazy";
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    iframe.allowFullscreen = true;
+    player.append(iframe);
+    youtubeLink.href = `https://www.youtube.com/watch?v=${encodeURIComponent(mensagem.youtubeId.trim())}`;
+    youtubeLink.hidden = false;
+  } else {
+    const unavailable = document.createElement("p");
+    unavailable.className = "message-player__empty";
+    unavailable.textContent = "Vídeo em breve";
+    player.append(unavailable);
+    youtubeLink.hidden = true;
+  }
+
+  messagesGrid.hidden = true;
+  messageDetail.hidden = false;
+  messageDetail.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+}
+
+messageDetailBack?.addEventListener("click", () => {
+  messageDetail.hidden = true;
+  messagesGrid.hidden = false;
+  document.querySelector("#messages-title")?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+});
+
+renderMessageCards();
+
+/* =========================================================
    GALERIA: FOTOS DO ÚLTIMO CULTO
    (grade de destaque + modal com todas as fotos + visualizador)
 ========================================================= */
@@ -257,117 +315,12 @@ document.querySelectorAll(".watch-trigger").forEach((trigger) => {
 // linhas aqui. A grade de destaque, o contador e o modal "ver
 // todas" se atualizam sozinhos, sem precisar mexer em mais nada.
 const cultoPhotos = [
-  { src: "assets/pibr-culto/sao-jorge-01.jpg", alt: "Foto 1 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-02.jpg", alt: "Foto 2 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-03.jpg", alt: "Foto 3 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-04.jpg", alt: "Foto 4 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-05.jpg", alt: "Foto 5 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-06.jpg", alt: "Foto 6 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-07.jpg", alt: "Foto 7 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-08.jpg", alt: "Foto 8 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-09.jpg", alt: "Foto 9 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-10.jpg", alt: "Foto 10 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-11.jpg", alt: "Foto 11 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-12.jpg", alt: "Foto 12 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-13.jpg", alt: "Foto 13 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-14.jpg", alt: "Foto 14 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-15.jpg", alt: "Foto 15 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-16.jpg", alt: "Foto 16 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-17.jpg", alt: "Foto 17 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/sao-jorge-18.jpg", alt: "Foto 18 da Batista Renovada São Jorge" },
-  { src: "assets/pibr-culto/culto-01.jpg", alt: "Foto 1 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-02.jpg", alt: "Foto 2 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-03.jpg", alt: "Foto 3 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-04.jpg", alt: "Foto 4 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-05.jpg", alt: "Foto 5 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-06.jpg", alt: "Foto 6 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-07.jpg", alt: "Foto 7 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-08.jpg", alt: "Foto 8 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-09.jpg", alt: "Foto 9 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-10.jpg", alt: "Foto 10 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-11.jpg", alt: "Foto 11 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-12.jpg", alt: "Foto 12 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-13.jpg", alt: "Foto 13 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-14.jpg", alt: "Foto 14 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-15.jpg", alt: "Foto 15 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-16.jpg", alt: "Foto 16 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-17.jpg", alt: "Foto 17 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-18.jpg", alt: "Foto 18 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-19.jpg", alt: "Foto 19 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-20.jpg", alt: "Foto 20 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-21.jpg", alt: "Foto 21 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-22.jpg", alt: "Foto 22 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-23.jpg", alt: "Foto 23 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-24.jpg", alt: "Foto 24 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-25.jpg", alt: "Foto 25 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-26.jpg", alt: "Foto 26 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-27.jpg", alt: "Foto 27 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-28.jpg", alt: "Foto 28 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-29.jpg", alt: "Foto 29 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-30.jpg", alt: "Foto 30 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-31.jpg", alt: "Foto 31 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-32.jpg", alt: "Foto 32 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-33.jpg", alt: "Foto 33 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-34.jpg", alt: "Foto 34 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-35.jpg", alt: "Foto 35 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-36.jpg", alt: "Foto 36 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-37.jpg", alt: "Foto 37 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-38.jpg", alt: "Foto 38 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-39.jpg", alt: "Foto 39 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-40.jpg", alt: "Foto 40 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-41.jpg", alt: "Foto 41 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-42.jpg", alt: "Foto 42 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-43.jpg", alt: "Foto 43 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-44.jpg", alt: "Foto 44 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-45.jpg", alt: "Foto 45 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-46.jpg", alt: "Foto 46 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-47.jpg", alt: "Foto 47 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-48.jpg", alt: "Foto 48 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-49.jpg", alt: "Foto 49 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-50.jpg", alt: "Foto 50 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-51.jpg", alt: "Foto 51 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-52.jpg", alt: "Foto 52 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-53.jpg", alt: "Foto 53 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-54.jpg", alt: "Foto 54 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-55.jpg", alt: "Foto 55 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-56.jpg", alt: "Foto 56 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-57.jpg", alt: "Foto 57 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-58.jpg", alt: "Foto 58 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-59.jpg", alt: "Foto 59 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-60.jpg", alt: "Foto 60 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-61.jpg", alt: "Foto 61 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-62.jpg", alt: "Foto 62 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-63.jpg", alt: "Foto 63 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-64.jpg", alt: "Foto 64 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-65.jpg", alt: "Foto 65 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-66.jpg", alt: "Foto 66 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-67.jpg", alt: "Foto 67 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-68.jpg", alt: "Foto 68 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-69.jpg", alt: "Foto 69 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-70.jpg", alt: "Foto 70 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-71.jpg", alt: "Foto 71 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-72.jpg", alt: "Foto 72 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-73.jpg", alt: "Foto 73 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-74.jpg", alt: "Foto 74 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-75.jpg", alt: "Foto 75 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-76.jpg", alt: "Foto 76 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-77.jpg", alt: "Foto 77 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-78.jpg", alt: "Foto 78 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-79.jpg", alt: "Foto 79 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-80.jpg", alt: "Foto 80 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-81.jpg", alt: "Foto 81 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-82.jpg", alt: "Foto 82 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-83.jpg", alt: "Foto 83 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-84.jpg", alt: "Foto 84 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-85.jpg", alt: "Foto 85 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-86.jpg", alt: "Foto 86 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-87.jpg", alt: "Foto 87 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-88.jpg", alt: "Foto 88 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-89.jpg", alt: "Foto 89 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-90.jpg", alt: "Foto 90 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-91.jpg", alt: "Foto 91 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-92.jpg", alt: "Foto 92 do último culto — Batista Renovada Morumbi" },
-  { src: "assets/pibr-culto/culto-93.jpg", alt: "Foto 93 do último culto — Batista Renovada Morumbi" },
+  { src: "ativos/imagens/galeria-01.svg", alt: "Imagem genérica da galeria 1" },
+  { src: "ativos/imagens/galeria-02.svg", alt: "Imagem genérica da galeria 2" },
+  { src: "ativos/imagens/galeria-03.svg", alt: "Imagem genérica da galeria 3" },
+  { src: "ativos/imagens/galeria-04.svg", alt: "Imagem genérica da galeria 4" },
+  { src: "ativos/imagens/galeria-05.svg", alt: "Imagem genérica da galeria 5" },
+  { src: "ativos/imagens/galeria-06.svg", alt: "Imagem genérica da galeria 6" },
 ];
 
 const CULTO_FEATURED_COUNT = 12;
