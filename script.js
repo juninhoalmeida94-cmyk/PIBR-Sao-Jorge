@@ -89,8 +89,31 @@ function safePlay(video) {
   }
 }
 
+function syncHeroControls() {
+  if (!heroVideo) return;
+
+  if (videoSoundButton) {
+    videoSoundButton.innerHTML = heroVideo.muted
+      ? '<i class="fas fa-volume-mute" aria-hidden="true"></i>'
+      : '<i class="fas fa-volume-up" aria-hidden="true"></i>';
+    videoSoundButton.setAttribute("aria-label", heroVideo.muted ? "Ativar som" : "Desativar som");
+  }
+
+  if (videoPauseButton) {
+    videoPauseButton.innerHTML = heroVideo.paused
+      ? '<i class="fas fa-play" aria-hidden="true"></i>'
+      : '<i class="fas fa-pause" aria-hidden="true"></i>';
+    videoPauseButton.setAttribute("aria-label", heroVideo.paused ? "Reproduzir vídeo" : "Pausar vídeo");
+  }
+}
+
 if (heroVideo) {
   heroVideo.muted = true;
+
+  ["play", "pause", "volumechange", "ended"].forEach((eventName) => {
+    heroVideo.addEventListener(eventName, syncHeroControls);
+  });
+  syncHeroControls();
 
   heroVideo.addEventListener("error", () => {
     heroVideo.style.display = "none";
@@ -108,10 +131,7 @@ if (heroVideo && videoSoundButton) {
   videoSoundButton.addEventListener("click", () => {
     heroVideo.muted = !heroVideo.muted;
     safePlay(heroVideo);
-    videoSoundButton.innerHTML = heroVideo.muted
-      ? '<i class="fas fa-volume-mute"></i>'
-      : '<i class="fas fa-volume-up"></i>';
-    videoSoundButton.setAttribute("aria-label", heroVideo.muted ? "Ativar som" : "Desativar som");
+    syncHeroControls();
   });
 }
 
@@ -119,13 +139,10 @@ if (heroVideo && videoPauseButton) {
   videoPauseButton.addEventListener("click", () => {
     if (heroVideo.paused) {
       safePlay(heroVideo);
-      videoPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
-      videoPauseButton.setAttribute("aria-label", "Pausar vídeo");
     } else {
       heroVideo.pause();
-      videoPauseButton.innerHTML = '<i class="fas fa-play"></i>';
-      videoPauseButton.setAttribute("aria-label", "Reproduzir vídeo");
     }
+    syncHeroControls();
   });
 }
 
@@ -213,7 +230,7 @@ function renderMessageCards() {
     const content = document.createElement("div");
     content.className = "message-card__content";
     content.innerHTML = `
-      <div class="message-card__date">${mensagem.data}</div>
+      ${mensagem.data ? `<div class="message-card__date">${mensagem.data}</div>` : ""}
       <h3>${mensagem.titulo}</h3>
       ${mensagem.pregador ? `<div class="message-card__speaker">${mensagem.pregador}</div>` : ""}
       ${mensagem.descricao ? `<p>${mensagem.descricao}</p>` : ""}
@@ -225,17 +242,9 @@ function renderMessageCards() {
     button.textContent = "Assistir mensagem →";
     button.addEventListener("click", () => openMessage(index));
     content.append(button);
-    article.tabIndex = 0;
-    article.setAttribute("role", "button");
     article.setAttribute("aria-label", `Abrir mensagem: ${mensagem.titulo}`);
     article.addEventListener("click", (event) => {
       if (!event.target.closest("button")) openMessage(index);
-    });
-    article.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openMessage(index);
-      }
     });
     article.append(media, content);
     messagesGrid.append(article);

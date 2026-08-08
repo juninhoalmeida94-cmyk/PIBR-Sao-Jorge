@@ -6,11 +6,14 @@
   --white:#ffffff;
   --bone:#ffffff;
   --grey:#6b6b6b;
+  --muted:var(--grey);
   --line:#d8d8d6;
   --line-dark:#333333;
   --display: 'Fraunces', serif;
   --body: 'Inter', sans-serif;
   --mono: 'Space Grotesk', sans-serif;
+  --serif:var(--display);
+  --sans:var(--body);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -353,6 +356,9 @@ header{
 .message-card p{margin:15px 0 22px;color:var(--muted);font-size:14px;line-height:1.65;}
 .message-card__action{align-self:flex-start;margin-top:auto;padding:0 0 6px;border:0;border-bottom:1px solid var(--ink);background:transparent;color:var(--ink);font:600 10px/1 var(--sans);letter-spacing:.13em;text-transform:uppercase;cursor:pointer;transition:opacity .2s ease;}
 .message-card__action:hover{opacity:.55;}
+.message-card__action:focus-visible,
+.message-detail__back:focus-visible,
+.message-youtube-link:focus-visible{outline:2px solid var(--ink);outline-offset:4px;}
 .message-detail{max-width:900px;margin:0 auto;scroll-margin-top:110px;}
 .message-detail__back{margin:0 0 22px;padding:0;border:0;background:transparent;color:var(--muted);font:600 10px/1 var(--sans);letter-spacing:.13em;text-transform:uppercase;cursor:pointer;}
 .message-detail__back:hover{color:var(--ink);}
@@ -367,7 +373,6 @@ header{
 .message-detail__description[hidden]{display:none;}
 .message-video-block{max-width:720px;margin:30px auto 0;}
 .message-video-block>.eyebrow{margin-bottom:10px;font-size:9px;font-weight:600;letter-spacing:.18em;animation:fadeInUp .55s .06s ease both;}
-.message-video-block>.eyebrow::before{content:"— ";}
 .message-player{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#141416;animation:fadeInUp .55s .1s ease both;}
 .message-player iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
 .message-player__empty{width:100%;height:100%;display:grid;place-items:center;margin:0;color:#aaa;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;}
@@ -925,7 +930,7 @@ footer{background:var(--black);color:var(--white);padding:72px 0 30px;}
   padding-bottom:56px;border-bottom:1px solid #2a2a2a;
 }
 .footer-brand .logo{color:var(--white);margin-bottom:18px;}
-.footer-brand .logo img{width:auto;height:92px;filter:brightness(0) invert(1);}
+.footer-brand .logo img{width:auto;height:92px;}
 .footer-brand p{color:#b8b8b8;font-size:14.5px;max-width:300px;line-height:1.7;}
 .footer-brand .footer-location{
   margin-top:12px;

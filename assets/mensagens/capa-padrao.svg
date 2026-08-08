@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Capa genérica de mensagem</title>
+  <desc id="desc">Composição abstrata neutra para substituir capas ainda não cadastradas.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111113"/>
+      <stop offset="1" stop-color="#323235"/>
+    </linearGradient>
+    <radialGradient id="light" cx="70%" cy="25%" r="65%">
+      <stop offset="0" stop-color="#d9d5cd" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#d9d5cd" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#light)"/>
+  <path d="M-120 780C260 510 570 550 910 300s620-160 840-70" fill="none" stroke="#eeeae2" stroke-opacity=".2" stroke-width="2"/>
+  <path d="M-80 830C310 610 660 650 970 400s570-210 760-130" fill="none" stroke="#eeeae2" stroke-opacity=".1" stroke-width="1"/>
+  <text x="100" y="755" fill="#f4f1eb" font-family="Georgia,serif" font-size="78">Título da mensagem</text>
+  <text x="105" y="814" fill="#cbc6bd" font-family="Arial,sans-serif" font-size="22" letter-spacing="8">MENSAGENS</text>
+</svg>
