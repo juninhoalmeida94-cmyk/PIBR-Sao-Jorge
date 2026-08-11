@@ -147,17 +147,6 @@ if (heroVideo && videoPauseButton) {
 }
 
 /* =========================================================
-   ASSISTA AO CULTO (vídeo sob demanda, via lightbox)
-========================================================= */
-document.querySelectorAll(".watch-trigger").forEach((trigger) => {
-  trigger.addEventListener("click", () => {
-    const videoSrc = trigger.dataset.videoSrc;
-    const videoPoster = trigger.dataset.videoPoster || "";
-    if (videoSrc) openLightbox("video", videoSrc, videoPoster);
-  });
-});
-
-/* =========================================================
    MENSAGENS
    Edite os objetos abaixo para trocar capas, textos e vídeos.
    Em youtubeId, informe somente o ID (ex.: dQw4w9WgXcQ).
@@ -193,6 +182,31 @@ const messageDetail = document.querySelector("#messageDetail");
 const messageDetailBack = document.querySelector("#messageDetailBack");
 const messageFallbackCover = "assets/mensagens/capa-padrao.svg";
 
+function getMessageDateTimestamp(value) {
+  const date = String(value || "").trim();
+  if (!date) return Number.NEGATIVE_INFINITY;
+
+  const isoMatch = date.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (isoMatch) {
+    return Date.UTC(Number(isoMatch[1]), Number(isoMatch[2]) - 1, Number(isoMatch[3]));
+  }
+
+  const brMatch = date.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (brMatch) {
+    return Date.UTC(Number(brMatch[3]), Number(brMatch[2]) - 1, Number(brMatch[1]));
+  }
+
+  return Number.NEGATIVE_INFINITY;
+}
+
+const mensagensOrdenadas = mensagens
+  .map((mensagem, originalIndex) => ({ mensagem, originalIndex }))
+  .sort((a, b) => {
+    const dateDifference = getMessageDateTimestamp(b.mensagem.data) - getMessageDateTimestamp(a.mensagem.data);
+    return dateDifference || a.originalIndex - b.originalIndex;
+  })
+  .map(({ mensagem }) => mensagem);
+
 function getMessageCover(mensagem) {
   const youtubeId = mensagem.youtubeId?.trim();
   if (youtubeId) return `https://i.ytimg.com/vi/${encodeURIComponent(youtubeId)}/maxresdefault.jpg`;
@@ -219,7 +233,7 @@ function renderMessageCards() {
   if (!messagesGrid) return;
   messagesGrid.replaceChildren();
 
-  mensagens.forEach((mensagem, index) => {
+  mensagensOrdenadas.forEach((mensagem) => {
     const article = document.createElement("article");
     article.className = "message-card";
 
@@ -240,19 +254,18 @@ function renderMessageCards() {
     button.type = "button";
     button.className = "message-card__action";
     button.textContent = "Assistir mensagem →";
-    button.addEventListener("click", () => openMessage(index));
+    button.addEventListener("click", () => openMessage(mensagem));
     content.append(button);
     article.setAttribute("aria-label", `Abrir mensagem: ${mensagem.titulo}`);
     article.addEventListener("click", (event) => {
-      if (!event.target.closest("button")) openMessage(index);
+      if (!event.target.closest("button")) openMessage(mensagem);
     });
     article.append(media, content);
     messagesGrid.append(article);
   });
 }
 
-function openMessage(index) {
-  const mensagem = mensagens[index];
+function openMessage(mensagem) {
   if (!mensagem || !messageDetail || !messagesGrid) return;
 
   const detailImage = document.querySelector("#messageDetailImage");
@@ -324,12 +337,6 @@ renderMessageCards();
 // linhas aqui. A grade de destaque, o contador e o modal "ver
 // todas" se atualizam sozinhos, sem precisar mexer em mais nada.
 const cultoPhotos = [
-  { src: "ativos/imagens/galeria-01.svg", alt: "Imagem genérica da galeria 1" },
-  { src: "ativos/imagens/galeria-02.svg", alt: "Imagem genérica da galeria 2" },
-  { src: "ativos/imagens/galeria-03.svg", alt: "Imagem genérica da galeria 3" },
-  { src: "ativos/imagens/galeria-04.svg", alt: "Imagem genérica da galeria 4" },
-  { src: "ativos/imagens/galeria-05.svg", alt: "Imagem genérica da galeria 5" },
-  { src: "ativos/imagens/galeria-06.svg", alt: "Imagem genérica da galeria 6" },
 ];
 
 const CULTO_FEATURED_COUNT = 12;
@@ -383,6 +390,10 @@ if (cultoFeaturedGrid && cultoPhotos.length) {
 
   if (cultoCountEl) cultoCountEl.textContent = `(${cultoPhotos.length})`;
 
+}
+
+if (!cultoPhotos.length) {
+  cultoOpenAllBtn?.closest(".culto-more")?.setAttribute("hidden", "");
 }
 
 // modal com todas as fotos (miniaturas carregadas sob demanda, só quando aberto)
