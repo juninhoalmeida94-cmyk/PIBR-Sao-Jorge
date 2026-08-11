@@ -5,12 +5,10 @@ if ("scrollRestoration" in history) {
   history.scrollRestoration = "manual";
 }
 
-if (window.location.hash) {
-  history.replaceState(history.state, "", `${window.location.pathname}${window.location.search}`);
+if (!window.location.hash) {
+  window.scrollTo(0, 0);
+  window.addEventListener("load", () => window.scrollTo(0, 0), { once: true });
 }
-
-window.scrollTo(0, 0);
-window.addEventListener("load", () => window.scrollTo(0, 0), { once: true });
 
 /* =========================================================
    MENU MOBILE
@@ -185,9 +183,13 @@ const mensagens = [
 ];
 
 const messagesGrid = document.querySelector("#messagesGrid");
+const messagesPreview = document.querySelector("#messagesPreview");
+const messagesAll = document.querySelector("#messagesAll");
+const messagesAllList = document.querySelector("#messagesAllList");
 const messageDetail = document.querySelector("#messageDetail");
 const messageDetailBack = document.querySelector("#messageDetailBack");
 const messageFallbackCover = "assets/mensagens/capa-padrao.svg";
+let messageOrigin = document.body.classList.contains("messages-page") ? "all" : "preview";
 
 function getMessageDateTimestamp(value) {
   const date = String(value || "").trim();
@@ -236,11 +238,18 @@ function createMessageImage(src, alt) {
   return image;
 }
 
+function formatMessageCardDate(value) {
+  const match = String(value || "").match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (!match) return value;
+  const months = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
+  return `${match[1]} DE ${months[Number(match[2]) - 1]} DE ${match[3]}`;
+}
+
 function renderMessageCards() {
   if (!messagesGrid) return;
   messagesGrid.replaceChildren();
 
-  mensagensOrdenadas.forEach((mensagem) => {
+  mensagensOrdenadas.slice(0, 3).forEach((mensagem) => {
     const article = document.createElement("article");
     article.className = "message-card";
 
@@ -251,7 +260,7 @@ function renderMessageCards() {
     const content = document.createElement("div");
     content.className = "message-card__content";
     content.innerHTML = `
-      ${mensagem.data ? `<div class="message-card__date">${mensagem.data}</div>` : ""}
+      ${mensagem.data ? `<div class="message-card__date">${formatMessageCardDate(mensagem.data)}</div>` : ""}
       <h3>${mensagem.titulo}</h3>
       ${mensagem.pregador ? `<div class="message-card__speaker">${mensagem.pregador}</div>` : ""}
       ${mensagem.descricao ? `<p>${mensagem.descricao}</p>` : ""}
@@ -272,8 +281,43 @@ function renderMessageCards() {
   });
 }
 
+function renderAllMessages() {
+  if (!messagesAllList) return;
+  messagesAllList.replaceChildren();
+
+  mensagensOrdenadas.forEach((mensagem) => {
+    const article = document.createElement("article");
+    article.className = "messages-all__item";
+
+    const media = document.createElement("div");
+    media.className = "messages-all__media";
+    media.append(createMessageImage(getMessageCover(mensagem), `Capa: ${mensagem.titulo}`));
+
+    const content = document.createElement("div");
+    content.className = "messages-all__content";
+    content.innerHTML = `
+      ${mensagem.data ? `<div class="message-card__date">${formatMessageCardDate(mensagem.data)}</div>` : ""}
+      <h3>${mensagem.titulo}</h3>
+      ${mensagem.pregador ? `<div class="message-card__speaker">${mensagem.pregador}</div>` : ""}
+      ${mensagem.descricao ? `<p>${mensagem.descricao}</p>` : ""}
+    `;
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "btn btn-dark messages-all__action";
+    button.textContent = "Assistir";
+    button.addEventListener("click", () => {
+      messageOrigin = "all";
+      openMessage(mensagem);
+    });
+    content.append(button);
+    article.append(media, content);
+    messagesAllList.append(article);
+  });
+}
+
 function openMessage(mensagem) {
-  if (!mensagem || !messageDetail || !messagesGrid) return;
+  if (!mensagem || !messageDetail || (!messagesGrid && !messagesAll)) return;
 
   const detailImage = document.querySelector("#messageDetailImage");
   detailImage.src = getMessageCover(mensagem);
@@ -322,18 +366,25 @@ function openMessage(mensagem) {
     youtubeLink.hidden = true;
   }
 
-  messagesGrid.hidden = true;
+  if (messagesPreview) messagesPreview.hidden = true;
+  if (messagesAll) messagesAll.hidden = true;
   messageDetail.hidden = false;
   messageDetail.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
 }
 
 messageDetailBack?.addEventListener("click", () => {
   messageDetail.hidden = true;
-  messagesGrid.hidden = false;
-  document.querySelector("#messages-title")?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+  if (messageOrigin === "all") {
+    messagesAll.hidden = false;
+    messagesAll.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+  } else {
+    if (messagesPreview) messagesPreview.hidden = false;
+    document.querySelector("#messages-title")?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+  }
 });
 
 renderMessageCards();
+renderAllMessages();
 
 /* =========================================================
    GALERIA: FOTOS DO ÚLTIMO CULTO
@@ -367,6 +418,7 @@ const cultoPhotos = [
 const CULTO_FEATURED_COUNT = 12;
 
 const cultoFeaturedGrid = document.querySelector("#cultoFeaturedGrid");
+const cultoAllGrid = document.querySelector("#cultoAllGrid");
 const cultoOpenAllBtn = document.querySelector("#cultoOpenAll");
 const cultoCountEl = document.querySelector("#cultoCount");
 const cultoModal = document.querySelector("#cultoModal");
@@ -415,6 +467,12 @@ if (cultoFeaturedGrid && cultoPhotos.length) {
 
   if (cultoCountEl) cultoCountEl.textContent = `(${cultoPhotos.length})`;
 
+}
+
+if (cultoAllGrid && cultoPhotos.length) {
+  cultoPhotos.forEach((photo, index) => {
+    cultoAllGrid.appendChild(buildCultoPhotoButton(photo, index));
+  });
 }
 
 if (!cultoPhotos.length) {

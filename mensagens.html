@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mensagens — Batista Renovada São Jorge</title>
+  <meta name="description" content="Assista às mensagens da Batista Renovada São Jorge.">
+  <link rel="icon" type="image/png" href="ativos/favicon/favicon-sao-jorge-v3.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20260811-menu-sobre">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="messages-page">
+  <header>
+    <nav class="nav">
+      <a href="index.html" class="logo"><img src="ativos/imagens/logo-horizontal-sao-jorge.png" alt="Batista Renovada São Jorge" width="575" height="230" decoding="async"></a>
+      <div class="navlinks">
+        <div class="nav-dropdown"><a class="nav-dropdown__trigger" href="sobre.html" aria-haspopup="true">Sobre Nós <span aria-hidden="true">⌄</span></a><div class="nav-dropdown__menu"><a href="sobre.html">Sobre nós</a><a href="missao.html">Missão</a><a href="visao.html">Visão</a></div></div><a href="index.html#agenda">Programação</a><a href="index.html#celulas">Células</a><a href="mensagens.html" aria-current="page">Mensagens</a><a href="index.html#contato">Contatos</a>
+      </div>
+      <div class="nav-cta"><a href="index.html#contato" class="btn btn-outline">Visite-nos</a><button class="burger" type="button" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span></button></div>
+    </nav>
+  </header>
+  <div class="mobile-overlay" aria-hidden="true"><a href="sobre.html">Sobre Nós</a><a href="index.html#agenda">Programação</a><a href="index.html#celulas">Células</a><a href="mensagens.html">Mensagens</a><a href="index.html#contato">Contatos</a></div>
+
+  <main class="messages-page-main">
+    <div class="wrap">
+      <article class="messages-all" id="messagesAll" aria-live="polite">
+        <a class="message-detail__back" href="index.html">← Voltar para o início</a>
+        <div class="messages-all__heading"><div class="eyebrow">Início / Mensagens</div><h1>Todas as mensagens</h1></div>
+        <div class="messages-all__list" id="messagesAllList"></div>
+      </article>
+      <article class="message-detail" id="messageDetail" aria-live="polite" hidden>
+        <button type="button" class="message-detail__back" id="messageDetailBack">← Voltar para mensagens</button>
+        <div class="message-detail__cover"><img id="messageDetailImage" src="" alt=""></div>
+        <div class="message-detail__content">
+          <h2 id="messageDetailTitle"></h2>
+          <div class="message-detail__meta" id="messageDetailMeta" hidden><span id="messageDetailDate"></span><span id="messageDetailSpeaker"></span></div>
+          <p class="message-detail__description" id="messageDetailDescription"></p>
+          <div class="message-video-block"><div class="eyebrow">YouTube</div><div class="message-player" id="messagePlayer"></div><a class="btn btn-outline message-youtube-link" id="messageYoutubeLink" href="https://www.youtube.com/@pibrsaojorge" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">▶</span> Assistir no YouTube <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer><div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand"><a href="index.html" class="logo"><img src="ativos/imagens/logo-horizontal-sao-jorge.png" alt="Batista Renovada São Jorge" loading="lazy" width="575" height="230"></a></div>
+      <div class="footer-col"><h4>Navegação</h4><a href="sobre.html">Sobre Nós</a><a href="index.html#celulas">Células</a><a href="mensagens.html">Mensagens</a><a href="index.html#eventos">Eventos</a><a href="index.html#oracao">Oração</a></div>
+      <div class="footer-col"><h4>Cultos</h4><p>Quarta-feira — Células</p><p>Sábado · 20h — CNX Jovem</p><p>Domingo · 19h30 — Culto de Celebração</p></div>
+      <div class="footer-col"><h4>Redes</h4><a href="https://www.instagram.com/pibrsaojorge/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.facebook.com/batistarenovadasaojorge" target="_blank" rel="noopener noreferrer">Facebook</a><a href="https://www.youtube.com/@pibrsaojorge" target="_blank" rel="noopener noreferrer">YouTube</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Batista Renovada São Jorge</span><div class="socials"><a href="https://www.instagram.com/pibrsaojorge/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="https://www.facebook.com/batistarenovadasaojorge" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="https://www.youtube.com/@pibrsaojorge" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a></div></div>
+  </div></footer>
+  <script src="script.js?v=20260811-paginas-internas"></script>
+</body>
+</html>

@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260811-final-refinado">
+<link rel="stylesheet" href="style.css?v=20260811-menu-sobre">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
@@ -23,8 +23,13 @@
       <img src="ativos/imagens/logo-horizontal-sao-jorge.png" alt="Batista Renovada São Jorge" width="575" height="230" decoding="async" fetchpriority="high">
     </a>
     <div class="navlinks">
-      <a href="#sobre">Sobre Nós</a>
-      <a href="#eventos">Programação</a>
+      <div class="nav-dropdown">
+        <a class="nav-dropdown__trigger" href="sobre.html" aria-haspopup="true">Sobre Nós <span aria-hidden="true">⌄</span></a>
+        <div class="nav-dropdown__menu">
+          <a href="sobre.html">Sobre nós</a><a href="missao.html">Missão</a><a href="visao.html">Visão</a>
+        </div>
+      </div>
+      <a href="#agenda">Programação</a>
       <a href="#celulas">Células</a>
       <a href="#mensagens">Mensagens</a>
       <a href="#contato">Contatos</a>
@@ -39,8 +44,8 @@
 </header>
 
 <div class="mobile-overlay" aria-hidden="true">
-  <a href="#sobre">Sobre Nós</a>
-  <a href="#eventos">Programação</a>
+  <a href="sobre.html">Sobre Nós</a>
+  <a href="#agenda">Programação</a>
   <a href="#celulas">Células</a>
   <a href="#mensagens">Mensagens</a>
   <a href="#contato">Contatos</a>
@@ -75,7 +80,7 @@
 </div>
 
 <!-- ============ SOBRE ============ -->
-<section class="section" id="sobre">
+<section class="section" id="agenda">
   <div class="wrap">
     <div class="about-grid">
       <div class="schedule-program">
@@ -150,10 +155,10 @@
     <div class="culto-grid" id="cultoFeaturedGrid" aria-label="Fotos em destaque do último culto"></div>
 
     <div class="culto-more">
-      <button type="button" class="btn btn-outline" id="cultoOpenAll">
+      <a class="btn btn-outline" href="galeria.html">
         Ver todas as fotos <span class="culto-count" id="cultoCount"></span>
         <i class="fas fa-images" aria-hidden="true"></i>
-      </button>
+      </a>
     </div>
   </div>
 </section>
@@ -161,13 +166,14 @@
 <!-- ============ MENSAGENS ============ -->
 <section class="section messages-section" id="mensagens" aria-labelledby="messages-title">
   <div class="wrap">
-    <div class="s-head messages-heading">
-      <div class="eyebrow">Palavra e inspiração</div>
-      <h2 id="messages-title">Mensagens</h2>
-      <p>Assista às mensagens e acompanhe conteúdos preparados para fortalecer sua caminhada de fé.</p>
-    </div>
+    <div id="messagesPreview">
+      <div class="messages-heading">
+        <h2 id="messages-title">Mensagens</h2>
+        <a href="mensagens.html">Ver todas</a>
+      </div>
 
-    <div class="messages-grid" id="messagesGrid" aria-live="polite"></div>
+      <div class="messages-grid" id="messagesGrid" aria-live="polite"></div>
+    </div>
 
     <article class="message-detail" id="messageDetail" aria-live="polite" hidden>
       <button type="button" class="message-detail__back" id="messageDetailBack">← Voltar para mensagens</button>
@@ -190,18 +196,6 @@
     </article>
   </div>
 </section>
-
-<!-- Modal: grade com TODAS as fotos do culto -->
-<div class="culto-modal" id="cultoModal" aria-hidden="true" role="dialog" aria-label="Galeria completa do último culto">
-  <div class="culto-modal-head">
-    <div>
-      <div class="eyebrow">Fotos do último culto</div>
-      <h3 id="cultoModalTotal"></h3>
-    </div>
-    <button type="button" class="culto-modal-close" id="cultoModalClose" aria-label="Fechar galeria">×</button>
-  </div>
-  <div class="culto-modal-thumbs" id="cultoModalThumbs"></div>
-</div>
 
 <!-- Visualizador: foto ampliada com navegação -->
 <div class="culto-viewer" id="cultoViewer" aria-hidden="true" role="dialog" aria-label="Visualizador de foto">
@@ -430,7 +424,7 @@
       </div>
       <div class="footer-col">
         <h4>Navegação</h4>
-        <a href="#sobre">Sobre Nós</a>
+        <a href="sobre.html">Sobre Nós</a>
         <a href="#celulas">Células</a>
         <a href="#mensagens">Mensagens</a>
         <a href="#eventos">Eventos</a>
@@ -460,7 +454,7 @@
   </div>
 </footer>
 
-  <script src="script.js?v=20260811-culto-0908"></script>
+  <script src="script.js?v=20260811-paginas-internas"></script>
 </body>
 </html>
 
