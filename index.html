@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260811-sem-culto-video">
+<link rel="stylesheet" href="style.css?v=20260811-final-refinado">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
@@ -234,11 +234,11 @@
     <div class="prayer-form">
       <form class="visual-form" action="https://docs.google.com/forms/d/e/1FAIpQLSfqIZYJtv6F9vRan0PyilGa80BLovGi2pSlhKbtDOMFa4vNsw/viewform" method="GET" target="_blank" rel="noopener noreferrer">
         <div class="field">
-          <label for="cells-name-phone">Nome e telefone (WhatsApp)</label>
+          <label for="cells-name-phone">Nome e telefone (WhatsApp) <span class="required-mark" aria-hidden="true">*</span></label>
           <input type="text" id="cells-name-phone" name="visual_nome_telefone" autocomplete="name" required>
         </div>
         <div class="field">
-          <label for="cells-address">Endereço/Bairro</label>
+          <label for="cells-address">Endereço/Bairro <span class="required-mark" aria-hidden="true">*</span></label>
           <input type="text" id="cells-address" name="visual_endereco_bairro" autocomplete="street-address" required>
         </div>
         <div class="form-submit">
@@ -329,31 +329,31 @@
     <div class="prayer-form">
       <form class="visual-form" action="https://docs.google.com/forms/d/e/1FAIpQLSc4DKUBnNr9sAykEiqiCHdqqF8UVOKLT0g4MIXzWhpDorxwFg/viewform" method="GET" target="_blank" rel="noopener noreferrer">
         <div class="field">
-          <label for="oracao-whatsapp">WhatsApp</label>
-          <input type="tel" id="oracao-whatsapp" name="visual_whatsapp" autocomplete="tel">
+          <label for="oracao-whatsapp">WhatsApp <span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="tel" id="oracao-whatsapp" name="visual_whatsapp" autocomplete="tel" required>
         </div>
         <div class="field">
-          <label for="oracao-nome">Nome completo</label>
-          <input type="text" id="oracao-nome" name="visual_nome" autocomplete="name">
+          <label for="oracao-nome">Nome completo <span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="text" id="oracao-nome" name="visual_nome" autocomplete="name" required>
         </div>
         <div class="field">
-          <label for="pedido">Qual seu pedido de oração?</label>
-          <textarea id="pedido" name="visual_pedido"></textarea>
+          <label for="pedido">Qual seu pedido de oração? <span class="required-mark" aria-hidden="true">*</span></label>
+          <textarea id="pedido" name="visual_pedido" required></textarea>
         </div>
         <div class="field">
-          <label for="pedido-area">Pedido na área de:</label>
-          <select id="pedido-area" name="visual_area">
+          <label for="pedido-area">Pedido na área de: <span class="required-mark" aria-hidden="true">*</span></label>
+          <select id="pedido-area" name="visual_area" required>
             <option value="">Selecione no formulário oficial</option>
           </select>
         </div>
         <div class="prayer-form-row">
           <div class="field">
-            <label for="oracao-idade">Qual sua idade?</label>
-            <input type="text" id="oracao-idade" name="visual_idade" inputmode="numeric">
+            <label for="oracao-idade">Qual sua idade? <span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="text" id="oracao-idade" name="visual_idade" inputmode="numeric" required>
           </div>
           <div class="field">
-            <label for="oracao-bairro">Bairro e cidade que mora?</label>
-            <input type="text" id="oracao-bairro" name="visual_bairro_cidade" autocomplete="address-level2">
+            <label for="oracao-bairro">Bairro e cidade que mora? <span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="text" id="oracao-bairro" name="visual_bairro_cidade" autocomplete="address-level2" required>
           </div>
         </div>
         <div class="field">
@@ -361,8 +361,8 @@
           <input type="text" id="oracao-cristao" name="visual_igreja">
         </div>
         <fieldset class="field choice-field">
-          <legend>Gostaria que alguém da nossa equipe entrasse em contato com você?</legend>
-          <label><input type="radio" name="visual_contato" value="Sim"> Sim</label>
+          <legend>Gostaria que alguém da nossa equipe entrasse em contato com você? <span class="required-mark" aria-hidden="true">*</span></legend>
+          <label><input type="radio" name="visual_contato" value="Sim" required> Sim</label>
           <label><input type="radio" name="visual_contato" value="Não"> Não</label>
         </fieldset>
         <div class="field">
@@ -460,7 +460,7 @@
   </div>
 </footer>
 
-<script src="script.js?v=20260811-secoes-ativadas"></script>
+  <script src="script.js?v=20260811-culto-0908"></script>
 </body>
 </html>
 

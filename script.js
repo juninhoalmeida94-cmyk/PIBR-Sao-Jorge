@@ -155,23 +155,30 @@ const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@pibrsaojorge";
 
 const mensagens = [
   {
+    youtubeId: "L8lZbhWkEmE",
+    titulo: "Culto de Celebração",
+    data: "09/08/2026",
+    pregador: "",
+    descricao: ""
+  },
+  {
     youtubeId: "iabtLscUtGM",
     titulo: "Culto de Celebração",
-    data: "",
+    data: "19/07/2026",
     pregador: "",
     descricao: ""
   },
   {
     youtubeId: "NStdcnhxZ1g",
     titulo: "Culto de Celebração",
-    data: "",
+    data: "26/07/2026",
     pregador: "",
     descricao: ""
   },
   {
     youtubeId: "KlASUJhVopg",
     titulo: "Culto de Celebração",
-    data: "",
+    data: "02/08/2026",
     pregador: "",
     descricao: ""
   }
@@ -337,6 +344,24 @@ renderMessageCards();
 // linhas aqui. A grade de destaque, o contador e o modal "ver
 // todas" se atualizam sozinhos, sem precisar mexer em mais nada.
 const cultoPhotos = [
+  { src: "ativos/imagens/culto/culto-01.jpg", alt: "Registro 1 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-02.jpg", alt: "Registro 2 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-03.jpg", alt: "Registro 3 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-04.jpg", alt: "Registro 4 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-05.jpg", alt: "Registro 5 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-06.jpg", alt: "Registro 6 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-07.jpg", alt: "Registro 7 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-08.jpg", alt: "Registro 8 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-09.jpg", alt: "Registro 9 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-10.jpg", alt: "Registro 10 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-11.jpg", alt: "Registro 11 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-12.jpg", alt: "Registro 12 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-13.jpg", alt: "Registro 13 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-14.jpg", alt: "Registro 14 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-15.jpg", alt: "Registro 15 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-16.jpg", alt: "Registro 16 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-17.jpg", alt: "Registro 17 do último culto — Batista Renovada São Jorge" },
+  { src: "ativos/imagens/culto/culto-18.jpg", alt: "Registro 18 do último culto — Batista Renovada São Jorge" },
 ];
 
 const CULTO_FEATURED_COUNT = 12;
