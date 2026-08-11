@@ -11,6 +11,23 @@ if (!window.location.hash) {
 }
 
 /* =========================================================
+   IDENTIDADE INSTITUCIONAL DO RODAPÉ
+========================================================= */
+document.querySelectorAll(".footer-brand").forEach((brand) => {
+  if (brand.querySelector(".footer-identity")) return;
+
+  const identity = document.createElement("p");
+  identity.className = "footer-identity";
+  identity.innerHTML = "<strong>Igreja Batista Renovada | São Jorge</strong><span>Uma igreja para sua Família!</span>";
+
+  const location = document.createElement("p");
+  location.className = "footer-location";
+  location.textContent = "Paranavaí · Paraná";
+
+  brand.append(identity, location);
+});
+
+/* =========================================================
    MENU MOBILE
 ========================================================= */
 const burger = document.querySelector(".burger");
@@ -43,32 +60,7 @@ document.querySelectorAll(".visual-form").forEach((form) => {
   });
 });
 
-/* =========================================================
-   PARALLAX HERO MINISTÉRIOS (com requestAnimationFrame)
-========================================================= */
-const ministriesHero = document.querySelector(".ministries-hero");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-if (ministriesHero && !reduceMotion) {
-  let ticking = false;
-
-  const updateParallax = () => {
-    const offset = ministriesHero.getBoundingClientRect().top;
-
-    if (offset < window.innerHeight && offset > -window.innerHeight) {
-      ministriesHero.style.backgroundPosition = `center ${offset * -0.12}px`;
-    }
-
-    ticking = false;
-  };
-
-  window.addEventListener("scroll", () => {
-    if (!ticking) {
-      requestAnimationFrame(updateParallax);
-      ticking = true;
-    }
-  }, { passive: true });
-}
 
 /* =========================================================
    VÍDEO DO HERO
@@ -86,6 +78,92 @@ function safePlay(video) {
     });
   }
 }
+
+/* =========================================================
+   DETALHES DOS MINISTÉRIOS
+========================================================= */
+const ministryIntro = document.querySelector("#ministryIntro");
+const ministryGrid = document.querySelector("#ministryGrid");
+const ministryCards = [...document.querySelectorAll(".min-card")];
+const ministryDetail = document.querySelector("#ministryDetail");
+const ministryDetailBack = document.querySelector("#ministryDetailBack");
+const ministryDetailNumber = document.querySelector("#ministryDetailNumber");
+const ministryDetailTitle = document.querySelector("#ministryDetailTitle");
+const ministryDetailText = document.querySelector("#ministryDetailText");
+const ministryDetailMenu = document.querySelector("#ministryDetailMenu");
+
+const ministryTexts = {
+  "Células": [
+    "Célula é um grupo pequeno, de 7 a 12 pessoas, que se reúne uma vez por semana com o objetivo de crescimento e multiplicação. É muito importante que todos os cristãos da Igreja Local estejam congregando na célula, onde a vida do Corpo se encontra de forma sintetizada em todos os seus muitos aspectos, tais como: adoração, intercessão, evangelismo, integração, discipulado, treinamento de líderes, comunhão, assistência social, etc."
+  ],
+  "Mídia Social": [
+    "Este Ministério tem um líder que trabalha diretamente com o Pastor. Suas atividades são: Coordenar os programas de comunicações da Igreja. Divulgar os programas especiais da Igreja, nos meios de comunicações e redes sociais. Coordenar e auxiliar a divulgação interna e externa da Igreja. Coordenar a execução de cartazes, adesivos plásticos, faixas, convites, luminosos, banners, e placas em nome da Igreja. Assessorar as organizações em suas áreas de divulgação. Manter em dia o registro da história da Igreja. Zelar cuidadosamente do equipamento audiovisual, exercendo controle sobre o seu uso;"
+  ],
+  "Ministério de Ação Social": [
+    "Este Ministério tem um líder que formará uma equipe de trabalho que se achar necessários. Coordena e amplia a ação Social da Igreja no atendimento aos necessitados; Planeja, coordena e executa as atividades de assistência social da Igreja, fazendo um levantamento de famílias carentes da Igreja; Estudar os pedidos referentes a famílias necessitadas não pertencentes à Igreja, atendendo-as na medida do possível; Estimular a participação da Igreja no programa de assistência social; Preparar material, atualizando o fichário de registro das pessoas atendidas pela equipe; A assistência social da Igreja deverá abranger, dentro do possível, as seguintes áreas: alimentos, roupas, medicamentos, dentária, médica, ocupacional, jurídica, educacional, etc."
+  ],
+  "Ministério de Adoração": [
+    "Adoração é uma das colunas da Igreja. Na Palavra de Deus, aprendemos que somos criados com o propósito de adorá-Lo. O ser humano tem dentro de si um dispositivo que o leva a adorar o Senhor, mas, quando as pessoas não descobrem esse real sentido da vida, elas são levadas por esse “instinto” a adorar alguma outra coisa que não seja o Deus verdadeiro. Porém, quando o ministério consegue cumprir fielmente aquilo que nos é proposto por meio da música, do teatro, da dança e de outras artes, nós invocamos a presença de Deus naquele lugar e O recebemos, porque Deus habita em meio aos louvores (“Tu, porém, és o Santo, és Rei, és o louvor de Israel”) Salmos 22:3. Criamos essa atmosfera de adoração. Mas, para isso, é necessário que o adorador tenha uma vida abundante e seja cheio do Espírito Santo de Deus, buscando sempre a santidade, a justiça e a retidão em seus afazeres diários.",
+    "Para aqueles que desejam fazer parte desse ministério e entende o chamado específico de Deus, nossa instrução é: Seja fiel, porque nosso Deus olha para o nosso coração e vê o mais profundo das intenções, as reais motivações para tudo aquilo que realizamos, e recompensa àqueles que O amam (“Pois a Palavra do Senhor é verdadeira; Ele é fiel em tudo o que faz”) – Salmos 33:4.",
+    "A adoração não é somente um ministério de louvor da Igreja. Entendemos que tudo o que é arte na Igreja deve compor o ministério de Adoração, ou seja, música, teatro, dança, som, filmagem, multimídia e iluminação. Todos esses ministérios devem estar integrados no decorrer da adoração, afinal, um depende do outro, formando uma equipe. A unidade tem um poder sobrenatural em tudo aquilo que fazemos. Os levitas exercem várias atividades na Igreja e todas elas caminham para o mesmo propósito. Portanto, quando uma dessas atividades toma outra direção, certamente o propósito não será alcançado. Unidade é benção de Deus e, mais do que isso, é um princípio e princípios não mudam. O Senhor mesmo estabeleceu assim. A Trindade caminha dessa forma, (“para que todos sejam um, Pai, como tu estás em mim e eu em ti. Que eles também estejam em nós, para que o mundo creia que tu me enviaste”) João 17:21 NVI."
+  ],
+  "Ministério de Educação Cristã": [
+    "Tem como função orientar os membros da Igreja e demais interessados no estudo da Palavra de Deus através de um programa de treinamento, envolvendo as várias organizações da Igreja. Estimular o crescimento numérico e espiritual dos alunos através de atividades desafiantes e encorajadoras; e Conscientizar os professores e líderes de expansão quanto à responsabilidade de aumentar o índice de participação dos membros; e Providenciar o material didático necessário ao bom desempenho dos líderes e professores e melhor aproveitamento dos membros; Assessorar o Pastor nas organizações dos cursos; Definir criteriosamente os equipamentos e objetos que faltam à escola e procurar integrar em suas atividades de ação todos os novos membros da Igreja, levando-os a alcançarem a maturidade cristã. E descobrir e treinar líderes em potencial, preparando-os para tarefas futuras."
+  ],
+  "Ministério de Louvor e Adoração": [
+    "Este Ministério tem um líder, sua função é programar e executar atividades que contribuam para o desenvolvimento espiritual dos membros, no âmbito de suas atividades. Procurar integrar em suas atividades de ação todos os novos membros da Igreja, levando-os a alcançarem a maturidade cristã. Descobrir e treinar líderes em potencial, preparando-os para tarefas futuras. Manter harmoniosa cooperação com as demais organizações internas da Igreja, evitando choques de horários e objetivos; Preparar relatórios, reunir-se periodicamente para avaliação e planejamento do trabalho."
+  ]
+};
+
+function openMinistryDetail(index) {
+  const card = ministryCards[index];
+  if (!card || !ministryDetail || !ministryGrid) return;
+
+  ministryDetailNumber.textContent = card.querySelector(".min-num")?.textContent || "";
+  const title = card.querySelector("h3")?.textContent || "";
+  ministryDetailTitle.textContent = title;
+  ministryDetailText.replaceChildren(...(ministryTexts[title] || []).map((text) => {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = text;
+    return paragraph;
+  }));
+  ministryDetailMenu?.querySelectorAll("button").forEach((button, buttonIndex) => {
+    if (buttonIndex === index) button.setAttribute("aria-current", "true");
+    else button.removeAttribute("aria-current");
+  });
+
+  ministryIntro.hidden = true;
+  ministryGrid.hidden = true;
+  ministryDetail.hidden = false;
+  ministryDetail.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+}
+
+if (ministryDetailMenu && ministryCards.length) {
+  ministryCards.forEach((card, index) => {
+    const title = card.querySelector("h3")?.textContent || `Ministério ${index + 1}`;
+    card.setAttribute("aria-label", `Conhecer ${title}`);
+    card.addEventListener("click", () => openMinistryDetail(index));
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openMinistryDetail(index);
+      }
+    });
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = title;
+    button.addEventListener("click", () => openMinistryDetail(index));
+    ministryDetailMenu.append(button);
+  });
+}
+
+ministryDetailBack?.addEventListener("click", () => {
+  ministryDetail.hidden = true;
+  ministryIntro.hidden = false;
+  ministryGrid.hidden = false;
+  ministryGrid.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+});
 
 function syncHeroControls() {
   if (!heroVideo) return;
@@ -184,6 +262,9 @@ const mensagens = [
 
 const messagesGrid = document.querySelector("#messagesGrid");
 const messagesPreview = document.querySelector("#messagesPreview");
+const messagesSection = document.querySelector("#mensagens");
+const eventsSection = document.querySelector("#eventos");
+if (eventsSection && messagesSection) eventsSection.insertAdjacentElement("afterend", messagesSection);
 const messagesAll = document.querySelector("#messagesAll");
 const messagesAllList = document.querySelector("#messagesAllList");
 const messageDetail = document.querySelector("#messageDetail");
